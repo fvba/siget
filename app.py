@@ -20,7 +20,7 @@ from flask import request, redirect
 def cadastrar_evento():
     if request.method == 'POST':
 
-        # 🔹 DADOS DO EVENTO
+        #DADOS DO EVENTO
         nome = request.form['nome']
         local = request.form['local']
         data = request.form['data']
@@ -31,7 +31,7 @@ def cadastrar_evento():
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
 
-        # 🔥 SALVA EVENTO
+        #SALVA EVENTO
         cursor.execute("""
             INSERT INTO evento (nome, local, data, horario, publico, organizador)
             VALUES (?, ?, ?, ?, ?, ?)
@@ -39,7 +39,7 @@ def cadastrar_evento():
 
         evento_id = cursor.lastrowid
 
-        # 🔹 DADOS DAS INTERDIÇÕES
+        #DADOS DAS INTERDIÇÕES
         vias = request.form.getlist('via[]')
         trechos_inicio = request.form.getlist('trecho_inicio[]')
         trechos_fim = request.form.getlist('trecho_fim[]')
@@ -48,7 +48,7 @@ def cadastrar_evento():
         horas_fim = request.form.getlist('hora_fim[]')
         observacoes = request.form.getlist('observacoes[]')
 
-        # 🔥 SALVA TODAS AS INTERDIÇÕES
+        #SALVA TODAS AS INTERDIÇÕES
         for i in range(len(vias)):
             if vias[i]:  # evita salvar vazio
                 cursor.execute("""
@@ -84,7 +84,7 @@ def listar_eventos():
     cursor.execute("""
         SELECT * FROM evento
         ORDER BY id DESC
-    """)  # 🔥 MAIS RECENTE PRIMEIRO
+    """)  #MAIS RECENTE PRIMEIRO
 
     eventos = cursor.fetchall()
 
@@ -139,11 +139,11 @@ def visualizar_evento(id):
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
 
-    # Evento
+    #Evento
     cursor.execute("SELECT * FROM evento WHERE id=?", (id,))
     evento = cursor.fetchone()
 
-    # Interdições
+    #Interdições
     cursor.execute("SELECT * FROM interdicao WHERE evento_id=?", (id,))
     interdicoes = cursor.fetchall()
 
