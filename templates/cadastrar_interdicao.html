@@ -1,0 +1,24 @@
+<h2>Cadastrar Interdição</h2>
+
+<form method="POST">
+
+    Evento:
+    <select name="evento_id">
+        {% for evento in eventos %}
+            <option value="{{ evento[0] }}">{{ evento[1] }}</option>
+        {% endfor %}
+    </select><br>
+
+    Via: <input type="text" name="via"><br>
+    Trecho início: <input type="text" name="trecho_inicio"><br>
+    Trecho fim: <input type="text" name="trecho_fim"><br>
+
+    Tipo de bloqueio: <input type="text" name="tipo_bloqueio"><br>
+
+    Hora início: <input type="time" name="hora_inicio"><br>
+    Hora fim: <input type="time" name="hora_fim"><br>
+
+    Observações: <input type="text" name="observacoes"><br>
+
+    <button type="submit">Salvar</button>
+</form>

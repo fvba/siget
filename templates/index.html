@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <title>SIGET</title>
+  </head>
+  <body>
+    <h1>Sistema de Gestão de Eventos de Tráfego</h1>
+
+    <a href="/cadastrar_evento">Cadastrar Evento</a><br />
+    <a href="/cadastrar_interdicao">Cadastrar Interdição</a>
+
+    <h2>Eventos cadastrados</h2>
+
+    <ul>
+      {% for evento in eventos %}
+      <li>{{ evento[1] }} - {{ evento[2] }} - {{ evento[3] }}</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
