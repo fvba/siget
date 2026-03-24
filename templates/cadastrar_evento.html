@@ -1,6 +1,9 @@
-<h2>Cadastrar Evento</h2>
+<h2>Cadastrar Evento + Interdições</h2>
 
 <form method="POST">
+
+    <h3>Dados do Evento</h3>
+
     Nome: <input type="text" name="nome"><br>
     Local: <input type="text" name="local"><br>
     Data: <input type="date" name="data"><br>
@@ -8,5 +11,66 @@
     Público: <input type="number" name="publico"><br>
     Organizador: <input type="text" name="organizador"><br>
 
-    <button type="submit">Salvar</button>
+    <hr>
+
+    <h3>Interdições</h3>
+
+    <div id="interdicoes-container">
+
+        <div class="interdicao">
+            <h4>Interdição 1</h4>
+
+            Via: <input type="text" name="via[]"><br>
+            Trecho início: <input type="text" name="trecho_inicio[]"><br>
+            Trecho fim: <input type="text" name="trecho_fim[]"><br>
+
+            Tipo de bloqueio: <input type="text" name="tipo_bloqueio[]"><br>
+
+            Hora início: <input type="time" name="hora_inicio[]"><br>
+            Hora fim: <input type="time" name="hora_fim[]"><br>
+
+            Observações: <input type="text" name="observacoes[]"><br>
+        </div>
+
+    </div>
+
+    <br>
+
+    <button type="button" onclick="addInterdicao()">➕ Adicionar outra interdição</button>
+
+    <br><br>
+
+    <button type="submit">Salvar tudo</button>
+
 </form>
+
+<script>
+let contador = 1;
+
+function addInterdicao() {
+    contador++;
+
+    const container = document.getElementById('interdicoes-container');
+
+    const bloco = document.createElement('div');
+
+    bloco.innerHTML = `
+        <h4>Interdição ${contador}</h4>
+
+        Via: <input type="text" name="via[]"><br>
+        Trecho início: <input type="text" name="trecho_inicio[]"><br>
+        Trecho fim: <input type="text" name="trecho_fim[]"><br>
+
+        Tipo de bloqueio: <input type="text" name="tipo_bloqueio[]"><br>
+
+        Hora início: <input type="time" name="hora_inicio[]"><br>
+        Hora fim: <input type="time" name="hora_fim[]"><br>
+
+        Observações: <input type="text" name="observacoes[]"><br>
+
+        <hr>
+    `;
+
+    container.appendChild(bloco);
+}
+</script>

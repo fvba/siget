@@ -1,0 +1,12 @@
+<h2>Editar Evento</h2>
+
+<form method="POST">
+    Nome: <input type="text" name="nome" value="{{ evento[1] }}"><br>
+    Local: <input type="text" name="local" value="{{ evento[2] }}"><br>
+    Data: <input type="date" name="data" value="{{ evento[3] }}"><br>
+    Horário: <input type="time" name="horario" value="{{ evento[4] }}"><br>
+    Público: <input type="number" name="publico" value="{{ evento[5] }}"><br>
+    Organizador: <input type="text" name="organizador" value="{{ evento[6] }}"><br>
+
+    <button type="submit">Salvar</button>
+</form>

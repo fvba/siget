@@ -1,0 +1,24 @@
+<h2>Eventos Cadastrados</h2>
+
+<table border="1">
+    <tr>
+        <th>Nome</th>
+        <th>Local</th>
+        <th>Data</th>
+        <th>Ações</th>
+    </tr>
+
+    {% for evento in eventos %}
+    <tr>
+        <td>{{ evento[1] }}</td>
+        <td>{{ evento[2] }}</td>
+        <td>{{ evento[3] }}</td>
+
+        <td>
+            <a href="/editar_evento/{{ evento[0] }}">Editar</a>
+            <a href="/excluir_evento/{{ evento[0] }}">Excluir</a>
+            <a href="/visualizar_evento/{{ evento[0] }}">Visualizar</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

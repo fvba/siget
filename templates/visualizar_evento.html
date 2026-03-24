@@ -1,0 +1,33 @@
+<h2>Detalhes do Evento</h2>
+
+<p><strong>Nome:</strong> {{ evento[1] }}</p>
+<p><strong>Local:</strong> {{ evento[2] }}</p>
+<p><strong>Data:</strong> {{ evento[3] }}</p>
+<p><strong>Horário:</strong> {{ evento[4] }}</p>
+<p><strong>Público:</strong> {{ evento[5] }}</p>
+<p><strong>Organizador:</strong> {{ evento[6] }}</p>
+
+<hr>
+
+<h3>Interdições</h3>
+
+{% if interdicoes %}
+    <ul>
+    {% for i in interdicoes %}
+        <li>
+            <strong>Via:</strong> {{ i[2] }} |
+            <strong>Trecho:</strong> {{ i[3] }} até {{ i[4] }} |
+            <strong>Tipo:</strong> {{ i[5] }} |
+            <strong>Horário:</strong> {{ i[6] }} - {{ i[7] }}
+            <br>
+            Obs: {{ i[8] }}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>Nenhuma interdição cadastrada.</p>
+{% endif %}
+
+<br>
+
+<a href="/eventos">⬅ Voltar</a>
