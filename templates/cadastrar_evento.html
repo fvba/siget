@@ -13,52 +13,34 @@
 
     <hr>
 
-    <h3>Interdições</h3>
+    <h3>Ruas Interditadas</h3>
 
-    <div id="interdicoes-container">
-
-        <div class="interdicao">
-            <h4>Interdição 1</h4>
-
-            Via: <input type="text" name="via[]"><br>
-            Trecho início: <input type="text" name="trecho_inicio[]"><br>
-            Trecho fim: <input type="text" name="trecho_fim[]"><br>
-
-            Tipo de bloqueio: <input type="text" name="tipo_bloqueio[]"><br>
-
-            Hora início: <input type="time" name="hora_inicio[]"><br>
-            Hora fim: <input type="time" name="hora_fim[]"><br>
-
-            Observações: <input type="text" name="observacoes[]"><br>
-
-            <hr>
-        </div>
-
-    </div>
+    <!-- COMEÇA VAZIO -->
+    <div id="interdicoes-container"></div>
 
     <br>
 
-    <button type="button" onclick="addInterdicao()">➕ Adicionar outra interdição</button>
+    <button type="button" onclick="addInterdicao()">Adicionar Interdição</button>
 
     <br><br>
 
-    <button type="submit">Salvar tudo</button>
+    <button type="submit">Salvar</button>
     <button type="button" onclick="history.back()">Cancelar</button>
 
 </form>
 
 <script>
-let contador = 1;
-
 function addInterdicao() {
-    contador++;
 
     const container = document.getElementById('interdicoes-container');
 
+    const total = document.querySelectorAll('.interdicao').length + 1;
+
     const bloco = document.createElement('div');
+    bloco.classList.add('interdicao');
 
     bloco.innerHTML = `
-        <h4>Interdição ${contador}</h4>
+        <h4>Interdição ${total}</h4>
 
         Via: <input type="text" name="via[]"><br>
         Trecho início: <input type="text" name="trecho_inicio[]"><br>
@@ -71,9 +53,27 @@ function addInterdicao() {
 
         Observações: <input type="text" name="observacoes[]"><br>
 
+        <button type="button" onclick="removerInterdicao(this)">Excluir interdição</button>
+
         <hr>
     `;
 
     container.appendChild(bloco);
+}
+
+function removerInterdicao(botao) {
+    const bloco = botao.parentElement;
+    bloco.remove();
+
+    atualizarNumeracao();
+}
+
+function atualizarNumeracao() {
+    const blocos = document.querySelectorAll('.interdicao');
+
+    blocos.forEach((bloco, index) => {
+        const titulo = bloco.querySelector('h4');
+        titulo.textContent = `Interdição ${index + 1}`;
+    });
 }
 </script>
