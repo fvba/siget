@@ -1,13 +1,108 @@
 <h2>Editar Evento</h2>
 
 <form method="POST">
+
+    <h3>Dados do Evento</h3>
+
     Nome: <input type="text" name="nome" value="{{ evento[1] }}"><br>
     Local: <input type="text" name="local" value="{{ evento[2] }}"><br>
     Data: <input type="date" name="data" value="{{ evento[3] }}"><br>
     Horário: <input type="time" name="horario" value="{{ evento[4] }}"><br>
     Público: <input type="number" name="publico" value="{{ evento[5] }}"><br>
-    Organizador: <input type="text" name="organizador" value="{{ evento[6] }}"><br><br>
+    Organizador: <input type="text" name="organizador" value="{{ evento[6] }}"><br>
+
+    <hr>
+
+    <h3>Interdições</h3>
+
+    <div id="interdicoes-container">
+
+        {% for i in interdicoes %}
+        <div class="interdicao">
+            <h4>Interdição {{ loop.index }}</h4>
+
+            <input type="hidden" name="interdicao_id[]" value="{{ i[0] }}">
+
+            Via: <input type="text" name="via[]" value="{{ i[2] }}"><br>
+            Trecho início: <input type="text" name="trecho_inicio[]" value="{{ i[3] }}"><br>
+            Trecho fim: <input type="text" name="trecho_fim[]" value="{{ i[4] }}"><br>
+
+            Tipo de bloqueio: <input type="text" name="tipo_bloqueio[]" value="{{ i[5] }}"><br>
+
+            Hora início: <input type="time" name="hora_inicio[]" value="{{ i[6] }}"><br>
+            Hora fim: <input type="time" name="hora_fim[]" value="{{ i[7] }}"><br>
+
+            Observações: <input type="text" name="observacoes[]" value="{{ i[8] }}"><br>
+
+            <button type="button" onclick="removerInterdicao(this)">Excluir interdição</button>
+
+            <hr>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <br>
+
+    <button type="button" onclick="addInterdicao()">Adicionar Interdição</button>
+
+    <br><br>
 
     <button type="submit">Salvar</button>
-    <button type="button" onclick="history.back()">Cancelar</button>
+    <button type="button" onclick="window.location.href='/eventos'">⬅ Voltar</button>
 </form>
+
+<script>
+function addInterdicao() {
+
+    const container = document.getElementById('interdicoes-container');
+    const total = document.querySelectorAll('.interdicao').length + 1;
+
+    const bloco = document.createElement('div');
+    bloco.classList.add('interdicao');
+
+    bloco.innerHTML = `
+        <h4>Interdição ${total}</h4>
+
+        <input type="hidden" name="interdicao_id[]" value="">
+
+        Via: <input type="text" name="via[]"><br>
+        Trecho início: <input type="text" name="trecho_inicio[]"><br>
+        Trecho fim: <input type="text" name="trecho_fim[]"><br>
+
+        Tipo de bloqueio: <input type="text" name="tipo_bloqueio[]"><br>
+
+        Hora início: <input type="time" name="hora_inicio[]"><br>
+        Hora fim: <input type="time" name="hora_fim[]"><br>
+
+        Observações: <input type="text" name="observacoes[]"><br>
+
+        <button type="button" onclick="removerInterdicao(this)">Excluir interdição</button>
+
+        <hr>
+    `;
+
+    container.appendChild(bloco);
+}
+
+function removerInterdicao(botao) {
+
+    const confirmar = confirm("Tem certeza que deseja excluir esta interdição?");
+
+    if (!confirmar) return;
+
+    const bloco = botao.parentElement;
+    bloco.remove();
+
+    atualizarNumeracao(); 
+}
+
+function atualizarNumeracao() {
+    const blocos = document.querySelectorAll('.interdicao');
+
+    blocos.forEach((bloco, index) => {
+        const titulo = bloco.querySelector('h4');
+        titulo.textContent = `Interdição ${index + 1}`;
+    });
+}
+</script>

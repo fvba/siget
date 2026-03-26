@@ -16,11 +16,18 @@
 
         <td>
             <a href="/editar_evento/{{ evento[0] }}">Editar</a>
-            <a href="/excluir_evento/{{ evento[0] }}">Excluir</a>
+
+            <!-- 🔥 CONFIRMAÇÃO AQUI -->
+            <a href="/excluir_evento/{{ evento[0] }}"
+               onclick="return confirm('Tem certeza que deseja excluir este evento?')">
+               Excluir
+            </a>
+
             <a href="/visualizar_evento/{{ evento[0] }}">Visualizar</a>
         </td>
     </tr>
     {% endfor %}
 </table>
+
 <br>
 <button type="button" onclick="window.location.href='/'">⬅ Voltar</button>

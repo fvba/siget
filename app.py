@@ -98,6 +98,8 @@ def editar_evento(id):
     cursor = conn.cursor()
 
     if request.method == 'POST':
+
+        # ===== EVENTO =====
         nome = request.form['nome']
         local = request.form['local']
         data = request.form['data']
@@ -111,16 +113,93 @@ def editar_evento(id):
             WHERE id=?
         """, (nome, local, data, horario, publico, organizador, id))
 
+
+        # ===== INTERDIÇÕES =====
+        ids = request.form.getlist('interdicao_id[]')
+        vias = request.form.getlist('via[]')
+        trechos_inicio = request.form.getlist('trecho_inicio[]')
+        trechos_fim = request.form.getlist('trecho_fim[]')
+        tipos = request.form.getlist('tipo_bloqueio[]')
+        horas_inicio = request.form.getlist('hora_inicio[]')
+        horas_fim = request.form.getlist('hora_fim[]')
+        observacoes = request.form.getlist('observacoes[]')
+
+
+        # 🔥 IDs que já existem no banco
+        cursor.execute("SELECT id FROM interdicao WHERE evento_id=?", (id,))
+        ids_db = [str(row[0]) for row in cursor.fetchall()]
+
+        ids_form = [i for i in ids if i]
+
+
+        # 🔥 DELETE (removidas no front)
+        for id_db in ids_db:
+            if id_db not in ids_form:
+                cursor.execute("DELETE FROM interdicao WHERE id=?", (id_db,))
+
+
+        # 🔥 INSERT / UPDATE
+        for i in range(len(vias)):
+
+            if not vias[i]:
+                continue
+
+            if ids[i]:
+                # UPDATE
+                cursor.execute("""
+                    UPDATE interdicao
+                    SET via=?, trecho_inicio=?, trecho_fim=?, tipo_bloqueio=?,
+                        hora_inicio=?, hora_fim=?, observacoes=?
+                    WHERE id=?
+                """, (
+                    vias[i],
+                    trechos_inicio[i],
+                    trechos_fim[i],
+                    tipos[i],
+                    horas_inicio[i],
+                    horas_fim[i],
+                    observacoes[i],
+                    ids[i]
+                ))
+            else:
+                # NOVA
+                cursor.execute("""
+                    INSERT INTO interdicao (
+                        evento_id, via, trecho_inicio, trecho_fim,
+                        tipo_bloqueio, hora_inicio, hora_fim, observacoes
+                    )
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    id,
+                    vias[i],
+                    trechos_inicio[i],
+                    trechos_fim[i],
+                    tipos[i],
+                    horas_inicio[i],
+                    horas_fim[i],
+                    observacoes[i]
+                ))
+
         conn.commit()
         conn.close()
 
         return redirect('/eventos')
 
+
+    # ===== GET =====
     cursor.execute("SELECT * FROM evento WHERE id=?", (id,))
     evento = cursor.fetchone()
+
+    cursor.execute("SELECT * FROM interdicao WHERE evento_id=?", (id,))
+    interdicoes = cursor.fetchall()
+
     conn.close()
 
-    return render_template('editar_evento.html', evento=evento)
+    return render_template(
+        'editar_evento.html',
+        evento=evento,
+        interdicoes=interdicoes
+    )
 
 
 @app.route('/excluir_evento/<int:id>')
